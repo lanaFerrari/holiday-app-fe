@@ -51,9 +51,9 @@ function HolidayForm({ onClose, onSubmit, people = [], preselectedPersonId }) {
             disabled={!!preselectedPersonId}
           >
             <option value="">Select a team member</option>
-            {people.map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name}
+            {people.map((person) => (
+              <option key={person.id} value={person.id}>
+                {person.name}
               </option>
             ))}
           </select>
