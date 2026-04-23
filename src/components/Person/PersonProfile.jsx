@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import HolidayForm from "../Forms/HolidayForm";
 import "./PersonProfile.css";
+import { holidayTypes } from "../../data/mockData";
 
 function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
   const [tab, setTab] = useState("all");
