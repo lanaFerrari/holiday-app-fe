@@ -1,0 +1,80 @@
+.picture-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.picture-circle {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.picture-placeholder {
+  font-size: 2.5rem;
+  opacity: 0.4;
+}
+
+.picture-preview {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.picture-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #6c63ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.picture-label {
+  margin: 0.5rem 0 0.1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.picture-hint {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #999;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0 0.75rem;
+  gap: 0.5rem;
+}
+
+.input-icon {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.input-wrapper input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 0.65rem 0;
+  font-size: 0.9rem;
+}
