@@ -9,23 +9,23 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
 
   const today = dayjs();
 
-  const filteredHolidays = holidays.filter((h) => {
-    if (tab === "upcoming") return dayjs(h.startDate).isAfter(today);
-    if (tab === "past") return dayjs(h.endDate).isBefore(today);
+  const filteredHolidays = holidays.filter((holiday) => {
+    if (tab === "upcoming") return dayjs(holiday.startDate).isAfter(today);
+    if (tab === "past") return dayjs(holiday.endDate).isBefore(today);
     return true;
   });
 
   const totalDays = 25;
-  const usedDays = holidays.reduce((acc, h) => {
-    return acc + dayjs(h.endDate).diff(dayjs(h.startDate), "day") + 1;
+  const usedDays = holidays.reduce((acc, holiday) => {
+    return acc + dayjs(holiday.endDate).diff(dayjs(holiday.startDate), "day") + 1;
   }, 0);
   const remainingDays = totalDays - usedDays;
   const usedPercent = Math.min((usedDays / totalDays) * 100, 100);
 
-  function getStatus(h) {
-    if (dayjs(h.endDate).isBefore(today))
+  function getStatus(holiday) {
+    if (dayjs(holiday.endDate).isBefore(today))
       return { label: "Completed", color: "#999" };
-    if (dayjs(h.startDate).isAfter(today))
+    if (dayjs(holiday.startDate).isAfter(today))
       return { label: "Upcoming", color: "#1976d2" };
     return { label: "Active", color: "#4caf50" };
   }
@@ -134,18 +134,18 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
             {filteredHolidays.length === 0 ? (
               <p className="no-holidays">No holidays found</p>
             ) : (
-              filteredHolidays.map((h) => {
-                const status = getStatus(h);
+              filteredHolidays.map((holiday) => {
+                const status = getStatus(holiday);
                 const days =
-                  dayjs(h.endDate).diff(dayjs(h.startDate), "day") + 1;
+                  dayjs(holiday.endDate).diff(dayjs(holiday.startDate), "day") + 1;
                 return (
-                  <div key={h.id} className="holiday-card">
+                  <div key={holiday.id} className="holiday-card">
                     <div className="holiday-card-date">
                       <span className="month">
-                        {dayjs(h.startDate).format("MMM")}
+                        {dayjs(holiday.startDate).format("MMM")}
                       </span>
                       <span className="day-num">
-                        {dayjs(h.startDate).format("D")}
+                        {dayjs(holiday.startDate).format("D")}
                       </span>
                     </div>
                     <div className="holiday-card-info">
@@ -156,11 +156,11 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
                         >
                           {status.label}
                         </span>
-                        {h.type && <span className="type-badge">{h.type}</span>}
+                        {holiday.type && <span className="type-badge">{holiday.type}</span>}
                       </div>
                       <p className="holiday-card-dates">
-                        {dayjs(h.startDate).format("dddd, MMMM D")} –{" "}
-                        {dayjs(h.endDate).format("dddd, MMMM D, YYYY")}
+                        {dayjs(holiday.startDate).format("dddd, MMMM D")} –{" "}
+                        {dayjs(holiday.endDate).format("dddd, MMMM D, YYYY")}
                       </p>
                       <p className="holiday-card-days">
                         {days} day{days > 1 ? "s" : ""}
@@ -181,9 +181,9 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
               <p className="summary-num">
                 {
                   holidays.filter(
-                    (h) =>
-                      !dayjs(h.endDate).isBefore(today) &&
-                      !dayjs(h.startDate).isAfter(today),
+                    (holiday) =>
+                      !dayjs(holiday.endDate).isBefore(today) &&
+                      !dayjs(holiday.startDate).isAfter(today),
                   ).length
                 }
               </p>
@@ -192,7 +192,7 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
             <div className="summary-card">
               <p className="summary-num">
                 {
-                  holidays.filter((h) => dayjs(h.startDate).isAfter(today))
+                  holidays.filter((holiday) => dayjs(holiday.startDate).isAfter(today))
                     .length
                 }
               </p>

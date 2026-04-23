@@ -12,10 +12,12 @@ function HolidayPanel({
   const isToday = day.isSame(dayjs(), "day");
 
   const onHoliday = holidays
-    .filter((h) => day.isBetween(h.startDate, h.endDate, "day", "[]"))
-    .map((h) => ({
-      ...h,
-      person: people.find((p) => p.id === h.personId),
+    .filter((holiday) =>
+      day.isBetween(holiday.startDate, holiday.endDate, "day", "[]"),
+    )
+    .map((holiday) => ({
+      ...holiday,
+      person: people.find((person) => person.id === holiday.personId),
     }));
 
   return (
@@ -27,22 +29,22 @@ function HolidayPanel({
         <p className="no-holidays">No one is off this day 🎉</p>
       ) : (
         <ul className="holiday-list">
-          {onHoliday.map((h) => (
+          {onHoliday.map((holiday) => (
             <li
-              key={h.id}
+              key={holiday.id}
               className="holiday-item"
-              onClick={() => onPersonClick(h.person?.id)}
+              onClick={() => onPersonClick(holiday.person?.id)}
               style={{ cursor: "pointer" }}
             >
               <div className="holiday-avatar-large">
-                {h.person?.name?.charAt(0)}
+                {holiday.person?.name?.charAt(0)}
               </div>
               <div>
-                <p className="person-name">{h.person?.name}</p>
-                <p className="person-title">{h.person?.jobTitle}</p>
+                <p className="person-name">{holiday.person?.name}</p>
+                <p className="person-title">{holiday.person?.jobTitle}</p>
                 <p className="holiday-dates">
-                  {dayjs(h.startDate).format("MMM D")} –{" "}
-                  {dayjs(h.endDate).format("MMM D")}
+                  {dayjs(holiday.startDate).format("MMM D")} –{" "}
+                  {dayjs(holiday.endDate).format("MMM D")}
                 </p>
               </div>
             </li>

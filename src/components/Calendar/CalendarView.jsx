@@ -21,13 +21,13 @@ function CalendarView({ selectedDay, onDaySelect }) {
   }
 
   function getHolidaysForDay(day) {
-    return holidays.filter((h) =>
-      day.isBetween(h.startDate, h.endDate, "day", "[]"),
+    return holidays.filter((holiday) =>
+      day.isBetween(holiday.startDate, holiday.endDate, "day", "[]"),
     );
   }
 
   function getPerson(personId) {
-    return people.find((p) => p.id === personId);
+    return people.find((person) => person.id === personId);
   }
 
   return (
@@ -67,11 +67,11 @@ function CalendarView({ selectedDay, onDaySelect }) {
             >
               <span className="day-number">{day.date()}</span>
               <div className="day-holidays">
-                {dayHolidays.map((h) => {
-                  const person = getPerson(h.personId);
+                {dayHolidays.map((holiday) => {
+                  const person = getPerson(holiday.personId);
                   return (
                     <div
-                      key={h.id}
+                      key={holiday.id}
                       className="holiday-avatar"
                       title={person?.name}
                     >

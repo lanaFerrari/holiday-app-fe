@@ -32,9 +32,9 @@ function App() {
 
   // Profile page view
   if (selectedPersonId) {
-    const person = people.find((p) => p.id === selectedPersonId);
+    const person = people.find((person) => person.id === selectedPersonId);
     const personHolidays = holidays.filter(
-      (h) => h.personId === selectedPersonId,
+      (holiday) => holiday.personId === selectedPersonId,
     );
     return (
       <PersonProfile
