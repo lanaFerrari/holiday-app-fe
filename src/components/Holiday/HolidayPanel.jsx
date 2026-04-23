@@ -2,9 +2,12 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
-import { holidays, people } from "../../data/mockData";
-
-function HolidayPanel({ selectedDay }) {
+function HolidayPanel({
+  selectedDay,
+  holidays = [],
+  people = [],
+  onPersonClick,
+}) {
   const day = selectedDay || dayjs();
   const isToday = day.isSame(dayjs(), "day");
 
@@ -25,7 +28,12 @@ function HolidayPanel({ selectedDay }) {
       ) : (
         <ul className="holiday-list">
           {onHoliday.map((h) => (
-            <li key={h.id} className="holiday-item">
+            <li
+              key={h.id}
+              className="holiday-item"
+              onClick={() => onPersonClick(h.person?.id)}
+              style={{ cursor: "pointer" }}
+            >
               <div className="holiday-avatar-large">
                 {h.person?.name?.charAt(0)}
               </div>
