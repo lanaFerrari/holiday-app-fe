@@ -30,6 +30,16 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
     return { label: "Active", color: "#4caf50" };
   }
 
+  function handleAwayToday() {
+    const today = dayjs().format("YYYY-MM-DD");
+    onAddHoliday({
+      personId: person.id,
+      startDate: today,
+      endDate: today,
+      type: "holiday",
+    });
+  }
+
   return (
     <div className="profile-page">
       <header className="app-header">
@@ -96,7 +106,9 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
             >
               + Add Holiday
             </button>
-            <button className="btn-away">+ Away today</button>
+            <button className="btn-away" onClick={handleAwayToday}>
+              + Away today
+            </button>
           </div>
           <button className="btn-delete">🗑 Delete Profile</button>
         </div>
