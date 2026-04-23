@@ -8,7 +8,7 @@ export const holidayTypes = [
   { id: "family_day", label: "Family Day", color: "#9c27b0" },
   { id: "sick", label: "Sick", color: "#ff9800" },
   { id: "night", label: "Night", color: "#212121" },
-  { id: "al_lodge", label: "AL Lodge", color: "#f44336" },
+  { id: "al_lodge", label: "At Lodge", color: "#f44336" },
 ];
 
 export const holidays = [

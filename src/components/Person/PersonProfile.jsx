@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import HolidayForm from "../Forms/HolidayForm";
 import "./PersonProfile.css";
+import { holidayTypes } from "../../data/mockData";
 
 function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
   const [tab, setTab] = useState("all");
@@ -17,7 +18,9 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
 
   const totalDays = 25;
   const usedDays = holidays.reduce((acc, holiday) => {
-    return acc + dayjs(holiday.endDate).diff(dayjs(holiday.startDate), "day") + 1;
+    return (
+      acc + dayjs(holiday.endDate).diff(dayjs(holiday.startDate), "day") + 1
+    );
   }, 0);
   const remainingDays = totalDays - usedDays;
   const usedPercent = Math.min((usedDays / totalDays) * 100, 100);
@@ -137,7 +140,8 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
               filteredHolidays.map((holiday) => {
                 const status = getStatus(holiday);
                 const days =
-                  dayjs(holiday.endDate).diff(dayjs(holiday.startDate), "day") + 1;
+                  dayjs(holiday.endDate).diff(dayjs(holiday.startDate), "day") +
+                  1;
                 return (
                   <div key={holiday.id} className="holiday-card">
                     <div className="holiday-card-date">
@@ -156,7 +160,22 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
                         >
                           {status.label}
                         </span>
-                        {holiday.type && <span className="type-badge">{holiday.type}</span>}
+                        {holiday.type && (
+                          <span
+                            className="type-badge"
+                            style={{
+                              background:
+                                holidayTypes.find(
+                                  (holidayType) =>
+                                    holidayType.id === holiday.type,
+                                )?.color || "#999",
+                            }}
+                          >
+                            {holidayTypes.find(
+                              (holidayType) => holidayType.id === holiday.type,
+                            )?.label || holiday.type}
+                          </span>
+                        )}
                       </div>
                       <p className="holiday-card-dates">
                         {dayjs(holiday.startDate).format("dddd, MMMM D")} –{" "}
@@ -192,8 +211,9 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
             <div className="summary-card">
               <p className="summary-num">
                 {
-                  holidays.filter((holiday) => dayjs(holiday.startDate).isAfter(today))
-                    .length
+                  holidays.filter((holiday) =>
+                    dayjs(holiday.startDate).isAfter(today),
+                  ).length
                 }
               </p>
               <p className="summary-label">Upcoming</p>
