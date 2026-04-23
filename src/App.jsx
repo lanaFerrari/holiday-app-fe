@@ -41,6 +41,9 @@ function App() {
         person={person}
         holidays={personHolidays}
         onBack={() => setSelectedPersonId(null)}
+        onAddHoliday={(newHoliday) => {
+          setHolidays((prev) => [...prev, { ...newHoliday, id: Date.now() }]);
+        }}
       />
     );
   }
@@ -88,7 +91,7 @@ function App() {
         />
       )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

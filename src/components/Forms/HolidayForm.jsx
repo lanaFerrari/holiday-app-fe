@@ -3,11 +3,13 @@ import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateRangeCalendar } from "@mui/x-date-pickers-pro/DateRangeCalendar";
-import { people, holidayTypes } from "../../data/mockData";
+import { holidayTypes } from "../../data/mockData";
 import "./HolidayForm.css";
 
-function HolidayForm({ onClose, onSubmit }) {
-  const [personId, setPersonId] = useState("");
+function HolidayForm({ onClose, onSubmit, people = [], preselectedPersonId }) {
+  const [personId, setPersonId] = useState(
+    preselectedPersonId ? String(preselectedPersonId) : "",
+  );
   const [dateRange, setDateRange] = useState([null, null]);
   const [holidayType, setHolidayType] = useState("");
 
@@ -46,6 +48,7 @@ function HolidayForm({ onClose, onSubmit }) {
           <select
             value={personId}
             onChange={(e) => setPersonId(e.target.value)}
+            disabled={!!preselectedPersonId}
           >
             <option value="">Select a team member</option>
             {people.map((p) => (
