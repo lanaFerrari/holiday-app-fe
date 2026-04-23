@@ -51,7 +51,18 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Holiday App</h1>
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <img
+            src="https://cdn.creazilla.com/emojis/57124/umbrella-on-ground-emoji-clipart-lg.png"
+            alt="umbrella"
+            style={{
+              width: "45px",
+              marginRight: "8px",
+              verticalAlign: "middle",
+            }}
+          />
+          <h1>Holiday Tracker</h1>
+        </div>
         <div className="app-actions">
           <button onClick={() => setShowPersonForm(true)}>+ Add Person</button>
           <button onClick={() => setShowHolidayForm(true)}>

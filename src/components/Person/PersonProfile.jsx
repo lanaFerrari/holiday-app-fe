@@ -48,7 +48,18 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
         <button className="back-btn" onClick={onBack}>
           ← Back
         </button>
-        <h1>Holiday App</h1>
+        <h1>
+          <img
+            src="https://cdn.creazilla.com/emojis/57124/umbrella-on-ground-emoji-clipart-lg.png"
+            alt="umbrella"
+            style={{
+              width: "45px",
+              marginRight: "8px",
+              verticalAlign: "middle",
+            }}
+          />
+          Holiday Tracker
+        </h1>
       </header>
 
       <div className="profile-title">
