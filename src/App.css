@@ -12,8 +12,23 @@
 }
 
 .app-actions button {
-  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: white;
+}
+
+.app-actions button:first-child {
+  background: #2563eb;
+}
+
+.app-actions button:last-child {
+  background: #26711d;
 }
 
 .calendar {

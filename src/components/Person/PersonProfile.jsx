@@ -49,7 +49,18 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
         <button className="back-btn" onClick={onBack}>
           ← Back
         </button>
-        <h1>Holiday App</h1>
+        <h1>
+          <img
+            src="https://cdn.creazilla.com/emojis/57124/umbrella-on-ground-emoji-clipart-lg.png"
+            alt="umbrella"
+            style={{
+              width: "45px",
+              marginRight: "8px",
+              verticalAlign: "middle",
+            }}
+          />
+          Holiday Tracker
+        </h1>
       </header>
 
       <div className="profile-title">
@@ -61,7 +72,9 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
         {/* Left Panel */}
         <div className="profile-left">
           <div className="profile-avatar-large">
-            {person.picture ? (
+            {person.photo ? (
+              <img src={person.photo} alt={person.name} />
+            ) : person.picture ? (
               <img
                 src={URL.createObjectURL(person.picture)}
                 alt={person.name}
@@ -161,20 +174,7 @@ function PersonProfile({ person, holidays, onBack, onAddHoliday }) {
                           {status.label}
                         </span>
                         {holiday.type && (
-                          <span
-                            className="type-badge"
-                            style={{
-                              background:
-                                holidayTypes.find(
-                                  (holidayType) =>
-                                    holidayType.id === holiday.type,
-                                )?.color || "#999",
-                            }}
-                          >
-                            {holidayTypes.find(
-                              (holidayType) => holidayType.id === holiday.type,
-                            )?.label || holiday.type}
-                          </span>
+                          <span className="type-badge">{holiday.type}</span>
                         )}
                       </div>
                       <p className="holiday-card-dates">
