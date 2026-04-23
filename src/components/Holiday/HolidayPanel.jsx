@@ -37,7 +37,20 @@ function HolidayPanel({
               style={{ cursor: "pointer" }}
             >
               <div className="holiday-avatar-large">
-                {holiday.person?.name?.charAt(0)}
+                {holiday.person?.photo ? (
+                  <img
+                    src={holiday.person.photo}
+                    alt={holiday.person.name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+                ) : (
+                  holiday.person?.name?.charAt(0)
+                )}
               </div>
               <div>
                 <p className="person-name">{holiday.person?.name}</p>
