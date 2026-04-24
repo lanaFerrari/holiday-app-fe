@@ -3,6 +3,7 @@
 A web-based team absence and holiday tracking system built with React and Vite.
 
 **GitHub Repository:** [https://github.com/lanaFerrari/holiday-app-fe](https://github.com/lanaFerrari/holiday-app-fe)
+
 **Live Demo:** [https://lanaferrari.github.io/holiday-app-fe/](https://lanaferrari.github.io/holiday-app-fe/)
 
 ---
