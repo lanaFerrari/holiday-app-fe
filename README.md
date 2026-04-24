@@ -118,11 +118,15 @@ The designs were used as a direct reference during development. Where design dec
 
 ## Project Planning
 
-The project was planned and managed using a Kanban board in Notion. Tasks were broken down into epics and individual tickets, each representing a discrete piece of work. The board was used throughout development to track progress, prioritise work, and identify blockers.
+The project was planned and managed using a Kanban board in Notion, with tasks broken down into epics and individual tickets, each representing a discrete piece of work. The board was used throughout development to track progress, prioritise work, and identify blockers.
 
 **Project Board:** [View Kanban Board](https://www.notion.so/3023bcdff74e8024847dd3eb5f14d098?v=3023bcdff74e80be966a000caeb53920)
 
-The use of a Kanban approach was appropriate for this project because the scope was relatively well understood from the outset, and the work could be broken down into small, independently deliverable units. Each feature was developed on its own branch, reviewed, and merged into the main branch via a pull request, following the same workflow that would be used on a professional engineering team.
+The use of a Kanban approach was appropriate for this project because the scope was relatively well understood from the outset, and the work could be broken down into small, independently deliverable units. Kanban is particularly well-suited to solo development projects because it provides visibility of work in progress without the overhead of sprint planning ceremonies associated with Scrum. The board gave a clear view of what was ready to start, what was in progress, and what had been completed, which helped maintain focus and avoid context switching between unrelated tasks.
+
+Each feature was developed on its own dedicated branch, reviewed, and merged into the main branch via a pull request. This branching strategy mirrors the workflow used by professional software engineering teams and provides several practical benefits. It keeps the main branch stable and deployable at all times. It creates a clear record of when each feature was introduced and what changes it involved. It also provides natural checkpoints for reviewing the quality of the code before it is merged, even when working alone.
+
+The five development phases were treated as loose milestones rather than fixed sprints, allowing work to carry over between phases when necessary without disrupting the overall plan. The phased structure helped maintain a logical build order — for example, ensuring that the data model and core calendar view were in place before building the features that depend on them, such as the holiday panel and the profile page.
 
 ### Development Phases
 
@@ -138,18 +142,30 @@ The use of a Kanban approach was appropriate for this project because the scope 
 
 ## Technology Stack
 
-Each technology in the stack was selected deliberately to suit the requirements of the project.
+Each technology in the stack was selected deliberately to suit the requirements of the project, balancing developer familiarity, suitability for the problem, and practical constraints around cost and time.
 
-| Layer | Technology | Rationale |
-|-------|------------|-----------|
-| Frontend | React + Vite | Component-based architecture suits the modular nature of the UI, with reusable components for the calendar, profile cards, and forms. Vite provides fast development server startup and hot module replacement. |
-| Styling | CSS (vanilla) | Keeps the tool clean and lightweight without introducing the complexity of a CSS framework. Scoped class names per component prevent style conflicts. |
-| Date handling | Day.js | Lightweight alternative to Moment.js with a similar API. Used for all date calculations, formatting, and comparisons throughout the application. |
-| UI Components | MUI X Date Pickers Pro | Provides an accessible, production-ready date range calendar component that would have taken significant time to build from scratch. |
-| Testing | Jest + React Testing Library | Jest is the industry-standard JavaScript testing framework. React Testing Library encourages testing components from the user's perspective rather than testing implementation details, which produces more reliable and meaningful tests. |
-| Version Control | GitHub | Used for branching, pull requests, and code review. All features were developed on dedicated branches and merged via pull requests. |
-| CI/CD | GitHub Actions | Provides tight integration with GitHub and allows workflows to be defined as code in the repository. Chosen over alternatives for its simplicity and zero additional cost. |
-| Deployment | GitHub Pages | Free, reliable hosting for static sites that integrates directly with GitHub Actions. Appropriate for a frontend-only MVP. |
+| Layer | Technology |
+|-------|------------|
+| Frontend | React + Vite |
+| Styling | CSS (vanilla) |
+| Date handling | Day.js |
+| UI Components | MUI X Date Pickers Pro |
+| Testing | Jest + React Testing Library |
+| Version Control | GitHub |
+| CI/CD | GitHub Actions |
+| Deployment | GitHub Pages |
+
+**React and Vite** were chosen for the frontend because React's component-based architecture is well suited to the modular nature of this application. The calendar, the holiday panel, the profile page, and the forms are all self-contained units of UI that can be developed, tested, and maintained independently. Vite was selected over Create React App because of its significantly faster development server startup and build times, which meaningfully improves the development experience during a time-constrained project.
+
+**Vanilla CSS** was used for all styling rather than a framework such as Tailwind or Bootstrap. This decision was taken to keep the project lightweight and to avoid introducing dependencies that would add complexity without providing proportional value for a project of this scale. Each component has its own CSS file, and class names are scoped to avoid conflicts between components.
+
+**Day.js** was chosen for date handling over Moment.js (which is no longer actively maintained and has a significantly larger bundle size) and the native Date API (which requires verbose syntax for common operations). Day.js provides a clean, chainable API and supports the `isBetween` plugin, used extensively to determine whether a date falls within a holiday range.
+
+**MUI X Date Pickers Pro** was selected for the date range calendar component in the holiday form. Building an accessible date range picker from scratch would have required significant development time and specialist accessibility knowledge. The MUI X component provides this out of the box, including keyboard navigation, screen reader support, and touch compatibility.
+
+**Jest and React Testing Library** were used for the testing implementation. Jest is the industry-standard JavaScript testing framework, providing test runners, assertion utilities, and mocking capabilities in a single package. React Testing Library was chosen specifically because it encourages writing tests from the user's perspective. Rather than asserting on internal component state or implementation details, tests are written in terms of what a user would see and interact with. This produces a more reliable test suite that is resilient to refactoring.
+
+**GitHub Actions** was selected for the CI/CD pipeline because of its tight integration with GitHub and the ability to define workflows as code within the repository itself, making the pipeline configuration versioned and reproducible alongside the application code.
 
 ---
 
@@ -241,9 +257,11 @@ The application was deployed to GitHub Pages using the `peaceiris/actions-gh-pag
 
 ## Testing
 
-Testing was implemented using **Jest** and **React Testing Library**, following a Test Driven Development approach for the core application logic. TDD involves writing a failing test before writing the implementation code, then writing the minimum code necessary to make the test pass, and then refactoring. This discipline encourages smaller, more focused functions and produces a test suite that genuinely reflects the intended behaviour of the application.
+Testing was implemented using **Jest** and **React Testing Library**, following a Test Driven Development approach for the core application logic. TDD involves writing a failing test before writing the implementation code, then writing the minimum code necessary to make the test pass, and then refactoring. This red-green-refactor cycle encourages smaller, more focused functions and produces a test suite that genuinely reflects the intended behaviour of the application rather than simply verifying that code exists.
 
-React Testing Library was chosen over Enzyme or direct DOM testing because it encourages testing from the user's perspective. Rather than testing the internal state of a component, tests are written in terms of what a user would see and interact with. This produces tests that are more resilient to refactoring and more meaningful as documentation of expected behaviour.
+Applying TDD to a React application requires a degree of discipline, particularly when working with components that have complex interactions or depend on external libraries. In this project, TDD was applied primarily to the data filtering logic — the functions responsible for determining which holidays fall on a given day, and which status to assign to a holiday based on its date range relative to today. These functions are pure and deterministic, making them well-suited to TDD. Component-level tests were written after the component structure was established, focusing on verifying that the correct output is rendered for given inputs.
+
+React Testing Library was chosen over Enzyme because it encourages testing from the user's perspective — asserting on what is visible on screen rather than on internal component state or implementation details. This produces tests that are more resilient to refactoring and more meaningful as documentation of expected behaviour.
 
 ### Running Tests
 
@@ -265,15 +283,15 @@ npm run test
 
 Accessibility was treated as a first-class concern throughout the build rather than an afterthought. The following considerations were applied systematically during development.
 
-**Semantic HTML** was used throughout the application. The page header uses a `<header>` element, the main content area uses `<main>`, lists of people use `<ul>` and `<li>`, and forms use proper `<label>` elements associated with their inputs via `htmlFor`. Using semantic HTML means that screen readers and assistive technologies can interpret the structure of the page correctly without relying on visual styling alone.
+**Semantic HTML** was used throughout the application. The page header uses a `<header>` element, the main content area uses `<main>`, lists of people use `<ul>` and `<li>`, and forms use proper `<label>` elements associated with their inputs via `htmlFor`. Using semantic HTML means that screen readers and assistive technologies can interpret the structure of the page correctly without relying on visual styling alone. It also provides meaningful structure to search engines and other automated tools that consume the page.
 
-**Alt text** was applied to all images, including profile pictures and the application logo. Where images are purely decorative, empty alt attributes are used to signal to screen readers that the image can be skipped.
+**Alt text** was applied to all images, including profile pictures and the application logo. Where images are purely decorative, empty alt attributes are used to signal to screen readers that the image can be skipped, preventing unnecessary noise for users navigating by audio.
 
-**Colour contrast** was reviewed against the WCAG 2.1 AA standard, which requires a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text. The primary blue used for buttons and interactive elements was verified to meet this standard against both white and dark backgrounds.
+**Colour contrast** was reviewed against the WCAG 2.1 AA standard, which requires a minimum contrast ratio of 4.5:1 for normal text and 3:1 for large text. The primary blue used for buttons and interactive elements was verified to meet this standard against both white and dark backgrounds. The holiday type colours used in badges were also reviewed to ensure that the white text labels on coloured backgrounds meet the minimum contrast requirement.
 
-**Keyboard navigation** is supported for all interactive elements including buttons, form inputs, and the date range calendar. The MUI X component library provides built-in keyboard support for the date picker, including arrow key navigation within the calendar grid.
+**Keyboard navigation** is supported for all interactive elements including buttons, form inputs, and the date range calendar. The MUI X component library provides built-in keyboard support for the date picker, including arrow key navigation within the calendar grid, Enter to select a date, and Escape to close the calendar. All custom buttons and interactive elements are implemented using native HTML button elements, which receive keyboard focus by default and respond to both mouse clicks and keyboard activation.
 
-**Form labels** are explicitly associated with their corresponding inputs. This ensures that screen readers announce the correct label when a form field receives focus, and that clicking a label focuses the corresponding input, improving usability for motor-impaired users.
+**Form labels** are explicitly associated with their corresponding inputs using the `htmlFor` attribute on `<label>` elements and matching `id` attributes on inputs. This ensures that screen readers announce the correct label when a form field receives focus, and that clicking a label focuses the corresponding input, which improves usability for motor-impaired users who may find small input targets difficult to click accurately.
 
 ### Usability Evaluation
 
@@ -292,13 +310,13 @@ The application was evaluated against each of the original stakeholder requireme
 
 ## CI/CD Pipeline
 
-Continuous Integration and Continuous Deployment (CI/CD) is a software engineering practice that automates the process of verifying and deploying code changes. Rather than manually running builds and deploying files, a CI/CD pipeline does this automatically every time code is pushed to the repository. This reduces the risk of broken code reaching production and ensures that the deployed version of the application always reflects the latest state of the main branch.
+Continuous Integration and Continuous Deployment (CI/CD) is a software engineering practice that automates the process of verifying and deploying code changes. A CI/CD pipeline runs builds and deployments automatically on every push, catching silent breakages — such as those caused by differences in Node.js versions or incompatible dependency versions — immediately rather than after merging, and ensuring the live site always reflects the latest state of the main branch.
 
-The project uses **GitHub Actions** to implement both CI and CD as separate workflows defined in the `.github/workflows` directory.
+The project uses **GitHub Actions** to implement both CI and CD as separate workflows defined in the `.github/workflows` directory. Separating the two workflows is a deliberate design decision. The CI workflow runs on all branches to catch breakages early, while the deploy workflow runs only on the main branch to ensure that only reviewed and approved code is published to the live site.
 
 ### CI Workflow
 
-The CI workflow is defined in `ci.yml` and is triggered on every push to any branch and on every pull request targeting the main branch. Its purpose is to verify that the code compiles and builds successfully before it is merged. If the build fails, the pull request is blocked from merging, preventing broken code from entering the main branch.
+The CI workflow is defined in `ci.yml` and is triggered on every push to any branch and on every pull request targeting the main branch. Its purpose is to verify that the code builds successfully before it is merged. If the build fails, the pull request is blocked from merging, preventing broken code from entering the main branch.
 
 The workflow steps are:
 1. Check out the repository code
@@ -308,22 +326,18 @@ The workflow steps are:
 
 ### Deploy Workflow
 
-The deploy workflow is defined in `deploy.yml` and is triggered only on pushes to the main branch. Its purpose is to build the application and publish the output to GitHub Pages automatically. This means that every time a pull request is merged into main, the live site is updated within minutes without any manual intervention.
+The deploy workflow is defined in `deploy.yml` and is triggered only on pushes to the main branch. Its purpose is to build the application and publish the output to GitHub Pages automatically. This means that every time a pull request is merged into main, the live site is updated within minutes without any manual intervention. The workflow uses the `peaceiris/actions-gh-pages` action to push the built output to the `gh-pages` branch, which GitHub Pages is configured to serve.
 
 The workflow steps are:
 1. Check out the repository code
 2. Set up Node.js version 20
 3. Install project dependencies
 4. Run the production build
-5. Deploy the contents of the `dist` folder to the `gh-pages` branch using the `peaceiris/actions-gh-pages` action
+5. Deploy the contents of the `dist` folder to the `gh-pages` branch
 
 ### Branch Protection
 
-The main branch is protected with the following rules to enforce code quality and prevent accidental breakage:
-
-- Pull requests are required before any code can be merged into main
-- The CI build check must pass before a pull request can be merged
-- Force pushes to the main branch are blocked
+The main branch is protected with the following rules to enforce code quality and prevent accidental breakage. Pull requests are required before any code can be merged into main, ensuring that every change is reviewed before it reaches production. The CI build check must pass before a pull request can be merged, ensuring that broken builds cannot enter the main branch even if a reviewer approves them. Force pushes to the main branch are blocked, preventing history rewrites that could cause confusion or data loss. Together, these rules implement a workflow that is consistent with professional engineering team standards.
 
 ---
 
@@ -465,13 +479,15 @@ The frontend uses mock data structured to match the shape of the planned backend
 
 The following features are planned for future phases of the project, once a backend API and database have been implemented.
 
-- **Backend API** — A RESTful API built with C# and ASP.NET Core to replace the mock data with persistent storage
-- **PostgreSQL database** — A relational database for storing employees, holidays, and departments
-- **User authentication** — Login functionality so each team member has their own account
-- **Google Calendar and Outlook integration** — Synchronise holidays with external calendar tools
-- **HR system integration** — Import employee data from existing HR systems
-- **Automated email notifications** — Notify team members when a holiday is approved or when a colleague logs an absence
-- -**Future FE improvements align with designs
+The highest priority is a backend API built with C# and ASP.NET Core, paired with a PostgreSQL database for persistent data storage. The current MVP stores all data in memory, so holidays and team members added during a session are lost on page refresh. The data model has been designed with this transition in mind, mapping cleanly to a relational schema. User authentication will follow, enabling holidays to be associated with the logged-in user automatically. Further planned features include Google Calendar and Outlook integration, a holiday approval workflow, and automated email notifications.
+
+- Backend API with C# and ASP.NET Core
+- PostgreSQL database for persistent data storage
+- User authentication and login
+- Google Calendar and Outlook integration
+- Holiday approval workflows
+- HR system integration
+- Future FE improvements and new features as per proposed design
 
 ---
 
